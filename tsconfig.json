@@ -5,14 +5,16 @@
     "isolatedModules": true,
     "isolatedDeclarations": true,
     "target": "esnext",
-    "module": "preserve",
-    "lib": ["ESNext"],
-    "types": ["node", "vitest/importMeta"],
+    "module": "esnext",
+    "lib": ["ES2024"],
+    "types": ["node", "vite-plus/test/importMeta"],
+    "resolveJsonModule": true,
     "moduleDetection": "force",
     "moduleResolution": "bundler",
     "noEmit": true,
     "rewriteRelativeImportExtensions": true,
     "skipLibCheck": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "noUnusedLocals": true
   }
 }

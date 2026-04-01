@@ -1,2 +1,3 @@
 # asap-promise
-⏱️ Exposed Promise implementation that doesn't queueMicrotask()
+
+⏱️ Promise with `.status` & `.value` that doesn't `queueMicrotask()`

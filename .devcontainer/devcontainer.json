@@ -1,13 +1,10 @@
 {
-    "image": "mcr.microsoft.com/devcontainers/base:debian",
-    "updateContentCommand": "curl -fsSL https://get.pnpm.io/install.sh | sh -",
-    // "postCreateCommand": "pnpm install",
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "TypeScriptTeam.native-preview",
-                "oxc.oxc-vscode"
-            ]
-        }
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
+  "updateContentCommand": "curl -fsSL https://vite.plus | bash",
+  "postCreateCommand": "vp install",
+  "customizations": {
+    "vscode": {
+      "extensions": ["VoidZero.vite-plus-extension-pack"]
     }
+  }
 }
