@@ -1,0 +1,14 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/base:debian",
+    // TODO: Remove beta version pinning
+    // https://pnpm.io/installation#on-posix-systems
+    "updateContentCommand": "curl -fsSL https://get.pnpm.io/install.sh | env PNPM_VERSION=11.0.0-beta.6 sh -",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "TypeScriptTeam.native-preview",
+                "oxc.oxc-vscode"
+            ]
+        }
+    }
+}
