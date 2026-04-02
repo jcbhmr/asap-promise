@@ -1,5 +1,5 @@
-// oxlint-disable no-floating-promises
-import { suite, test, expect, vi } from "vite-plus/test";
+import { suite, expect, vi } from "vite-plus/test";
+import test from "../test-with-promise.ts"
 import { scheduler } from "node:timers/promises";
 import { fulfilledCases } from "./three-cases.ts";
 
@@ -21,7 +21,7 @@ suite("1. must not transition to any other state.", () => {
     });
   }
 
-  test("immediately fulfill & reject", async () => {
+  test("immediately fulfill & reject", async ({ Promise }) => {
     const onFulfilled = vi.fn();
     const onRejected = vi.fn();
 

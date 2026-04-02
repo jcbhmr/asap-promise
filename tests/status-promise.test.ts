@@ -2,12 +2,10 @@
 import { test, expect, suite } from "vite-plus/test";
 import { scheduler } from "node:timers/promises";
 
-declare global {
-  interface Promise<T> {
-    readonly status: "pending" | "fulfilled" | "rejected";
-    readonly value?: T;
-    readonly reason?: any;
-  }
+interface StatusPromise<T> extends Promise<T> {
+  readonly status: "pending" | "fulfilled" | "rejected";
+  readonly value?: T;
+  readonly reason?: any;
 }
 
 suite("exposes fulfilled value as 'value' property", async () => {

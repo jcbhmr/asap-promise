@@ -11,25 +11,25 @@ function isPromiseLike<T>(value: any): value is PromiseLike<T> {
   return value != null && typeof value.then === "function";
 }
 
-export interface ASAPPromiseWithResolvers<T> {
-  promise: ASAPPromise<T>;
+export interface QuickPromiseWithResolvers<T> {
+  promise: QuickPromise<T>;
   resolve: (value: T | PromiseLike<T>) => void;
   reject: (reason?: any) => void;
 }
 
-export default class ASAPPromise<T> {
-  static resolve<T>(value: T | PromiseLike<T>): ASAPPromise<T> {
-    return new ASAPPromise((resolve, _reject) => resolve(value));
+export default class QuickPromise<T> {
+  static resolve<T>(value: T | PromiseLike<T>): QuickPromise<T> {
+    return new QuickPromise((resolve, _reject) => resolve(value));
   }
 
-  static reject<T = never>(reason?: any): ASAPPromise<T> {
-    return new ASAPPromise((_resolve, reject) => reject(reason));
+  static reject<T = never>(reason?: any): QuickPromise<T> {
+    return new QuickPromise((_resolve, reject) => reject(reason));
   }
 
-  static withResolvers<T>(): ASAPPromiseWithResolvers<T> {
+  static withResolvers<T>(): QuickPromiseWithResolvers<T> {
     let resolve: (value: T | PromiseLike<T>) => void;
     let reject: (reason?: any) => void;
-    const promise = new ASAPPromise<T>((innerResolve, innerReject) => {
+    const promise = new QuickPromise<T>((innerResolve, innerReject) => {
       resolve = innerResolve;
       reject = innerReject;
     });
@@ -123,19 +123,19 @@ export default class ASAPPromise<T> {
   then<TResult1 = T, TResult2 = never>(
     onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | null,
     onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null,
-  ): ASAPPromise<TResult1 | TResult2> {
+  ): QuickPromise<TResult1 | TResult2> {
     if (this.#state.status === "fulfilled") {
       const value = onfulfilled
         ? onfulfilled(this.#state.value)
         : (this.#state.value as unknown as TResult1);
-      return ASAPPromise.resolve(value);
+      return QuickPromise.resolve(value);
     }
     if (this.#state.status === "rejected") {
       const reason = onrejected ? onrejected(this.#state.reason) : this.#state.reason;
-      return ASAPPromise.reject(reason);
+      return QuickPromise.reject(reason);
     }
     const state = this.#state as Pending;
-    return new ASAPPromise<TResult1 | TResult2>((resolve, reject) => {
+    return new QuickPromise<TResult1 | TResult2>((resolve, reject) => {
       state.fulfillReactions.push((value) => {
         let result: TResult1 | PromiseLike<TResult1>;
         if (onfulfilled) {
@@ -169,22 +169,22 @@ export default class ASAPPromise<T> {
 
   catch<TResult = never>(
     onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null,
-  ): ASAPPromise<T | TResult> {
+  ): QuickPromise<T | TResult> {
     return this.then(undefined, onrejected);
   }
 
-  finally(onfinally?: (() => void) | null): ASAPPromise<T> {
+  finally(onfinally?: (() => void) | null): QuickPromise<T> {
     const onfulfilled = onfinally
       ? (value: T) => {
-          onfinally();
-          return value;
-        }
+        onfinally();
+        return value;
+      }
       : undefined;
     const onrejected = onfinally
       ? (reason: any) => {
-          onfinally();
-          throw reason;
-        }
+        onfinally();
+        throw reason;
+      }
       : undefined;
     return this.then(onfulfilled, onrejected);
   }
